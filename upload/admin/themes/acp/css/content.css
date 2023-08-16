@@ -26,13 +26,13 @@
 
 #ps-page-title, .ps-section-title {
 	text-align: left;
-	margin: 0 1em 1em 1em;
+	margin: 0 1em 1em;
  	background: url(../img/page-title-bg.jpg) repeat-x;
 	height: 57px;
 	border: 1px solid gray;
 }
 #ps-page-title div, .ps-section-title div {
-	padding: 7px 7px 0 7px;
+	padding: 7px 7px 0;
 }
 #ps-page-title h2, .ps-section-title h2 { 
 	float: left;
@@ -60,7 +60,7 @@
 }
 
 .ps-table-frame { 
-	margin: 0 0.5em 1em 0.5em;
+	margin: 0 0.5em 1em;
 }
 .ps-table-inner {
 	border: 1px solid gray;

@@ -147,11 +147,11 @@ acronym {
 #ps-login-popup #ps-login-inner,
 #ps-search-popup #ps-search-inner
 {
-	margin: 33px 10px 0 10px;
+	margin: 33px 10px 0;
 	font-size: 8pt;
 }
 #ps-login-popup input.field {
-	margin: 0 0.2em 0 0.2em;
+	margin: 0 0.2em;
 }
 #ps-login-inner p {
 	margin-bottom: 0.2em;

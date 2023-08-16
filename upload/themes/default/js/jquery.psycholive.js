@@ -75,7 +75,7 @@
 	// @param Object     opt  Options/settings to change behavior
 	function PsychoLive(ele, opt) {
 		return this.init(ele, opt);
-	};
+	}
 	$.fn.psycholive.PsychoLive = PsychoLive;
 	// PsychoLive methods can be overridden using
 	// $.fn.psycholive.PsychoLive.prototype.method_name
@@ -83,14 +83,14 @@
 		canvas_initialized: false,	// can't do any animations until true
 		
 		init: function(ele, opt){
-			;;; debug4('psycholive.init()');
+			 debug4('psycholive.init()');
 			this.ele = $(ele);
 			this.opt = opt;
 			// default to current location script path
 			if (!this.opt.setup) this.opt.setup = location.pathname;
 			if (!this.opt.queue) this.opt.queue = location.pathname;
 
-			;;; debug4('new PsychoLive(#' + this.ele.attr('id') + ')',5);
+			 debug4('new PsychoLive(#' + this.ele.attr('id') + ')',5);
 			this.reset();
 			this.canvas = new Canvas(this.ele, this.opt);
 			this.events = new Events();
@@ -125,7 +125,7 @@
 
 		// Reset the environment to a blank canvas and no events.
 		reset: function(){
-			;;; debug4('psycholive.reset()');
+			 debug4('psycholive.reset()');
 			this.status = STATUS.STOP;
 			this.prev_game = {}; //$.extend({}, this.game);	// copy of previous game
 			this.game = {};
@@ -149,7 +149,7 @@
 			if (!game_id) game_id = 0;
 			if (auto_advance == undefined) auto_advance = this.opt.auto_advance;
 			if (auto_start == undefined) auto_start = this.opt.auto_start;
-			;;; debug4('psycholive.setup('+game_id+','+auto_advance+','+auto_start+')');
+			 debug4('psycholive.setup('+game_id+','+auto_advance+','+auto_start+')');
 			if (this.status != STATUS.STOP) {
 				this.stop();
 			}
@@ -182,7 +182,7 @@
 				}
 			} else if (typeof this.opt.setup == 'string') {
 				// send an AJAX request to fetch the game info
-				;;; debug4('getJSON(request, ' + game_id + ')');
+				 debug4('getJSON(request, ' + game_id + ')');
 				$.ajax({
 					type: 'GET',
 					url: this.opt.setup,
@@ -190,7 +190,7 @@
 					cache: false,
 					dataType: 'json',
 					success: function(game){
-						;;; debug4('getJSON(success, ' + game.game_id + ')');
+						 debug4('getJSON(success, ' + game.game_id + ')');
 						$this.status = STATUS.IDLE;
 						if ($.isFunction($this.opt.setup_callback)) {
 							$this.opt.setup_callback.call($this, game);
@@ -201,7 +201,7 @@
 						}
 					},
 					error: function(xhr, status, exception) {
-						;;; debug4('getJSON(error, ' + status + ')');
+						 debug4('getJSON(error, ' + status + ')');
 						$this.canvas.message('Error loading game:<br />' + status,'MC');
 					}
 				});
@@ -223,7 +223,7 @@
 
 		// performs some pre-playback initialization of a game record.
 		init_game: function(game) {
-			;;; debug4('psycholive.init_game()');
+			 debug4('psycholive.init_game()');
 			if (this.game) {
 				// copy of previous game
 				this.prev_game = $.extend({}, this.game);
@@ -256,7 +256,7 @@
 					e.preventDefault();
 					return false;
 				});
-				;;; debug('NO NEW GAMES AVAILABLE - FULL STOP!');
+				 debug('NO NEW GAMES AVAILABLE - FULL STOP!');
 				// don't try and recheck from this point...
 				return false;
 			}
@@ -301,7 +301,7 @@
 			if (!game_id && this.game.game_id) {
 				game_id = this.game.game_id;
 			}
-			;;; debug4('psycholive.play('+game_id+')');
+			 debug4('psycholive.play('+game_id+')');
 			if (this.status == STATUS.STOP) {
 				// we need to setup a new game first...
 				return this.setup(game_id); //, true);
@@ -366,7 +366,7 @@
 		// update the current playback frame. This is the animation
 		// workhorse where everything moves around.
 		frame: function(){
-			;;; debug5('psycholive.frame()');
+			 debug5('psycholive.frame()');
 
 			// initialize the current timestamp if its zero.
 			// we initialize to the first event found.
@@ -396,7 +396,7 @@
 				if ($.isFunction(this.events[q[0].event_type])) {
 					this.events[q[0].event_type].apply(this, [ q ]);
 				} else {
-					;;; debug("'" + q[0].event_type + "' event handler does not exist!");
+					 debug("'" + q[0].event_type + "' event handler does not exist!");
 				}
 			}
 			
@@ -425,10 +425,10 @@
 
 			// the queue has ended... go to intermission...
 			if (this.game.end_time && this.next_offset >= this.game.max_idx) {
-				;;; debug('END OF QUEUE -- Going to intermission!');
+				 debug('END OF QUEUE -- Going to intermission!');
 				this.intermission();
 			} else if (this.idle && new Date().getTime()/1000 - this.idle > this.opt.max_queue_idle) {
-				;;; debug('QUEUE IS IDLE -- Going to intermission!');
+				 debug('QUEUE IS IDLE -- Going to intermission!');
 				this.intermission();
 			}
 
@@ -457,7 +457,7 @@
 
 		// manage the queue by fetching new events.
 		manage_queue: function(){
-			;;; debug5('psycholive.manage_queue(' + this.seconds_queued() + ' seconds)');
+			 debug5('psycholive.manage_queue(' + this.seconds_queued() + ' seconds)');
 
 			// throttle the queue if we have too much ...
 			if (this.queue_locked
@@ -488,7 +488,7 @@
 
 		// takes an event queue response and processes it...
 		process_queue: function(data) {
-			;;; debug5('psycholive.process_queue()');
+			 debug5('psycholive.process_queue()');
 			data.game = this.sanitize(data.game, true);
 			if (!data.code) {
 				//this.queue_pending = false;
@@ -509,7 +509,7 @@
 			// advance the offset 
 			this.next_offset = data.next_offset || 0;
 			
-			;;; debug5(data.events.length + ' events returned.');
+			 debug5(data.events.length + ' events returned.');
 			// add any new events to the end of the queue
 			if (data.events && data.events.constructor == Array) {
 				this.queue = this.queue.concat(data.events);
@@ -526,7 +526,7 @@
 
 		// called when no games were found and we want to recheck...
 		recheck_queue: function() {
-			;;; debug4('psycholive.recheck_queue()');
+			 debug4('psycholive.recheck_queue()');
 			this.stop_timer('recheck_queue');
 			this.queue_locked = false;
 			this.stop();		// just make sure its stopped...
@@ -542,14 +542,14 @@
 
 		start_timer: function(func, interval){
 			if ($.isFunction(this[func])) {
-				;;; debug('psycholive.start_timer('+func+', '+interval+')');
+				 debug('psycholive.start_timer('+func+', '+interval+')');
 				$.timer.add(this, interval, func, this[func], 0, false);
 			}
 			return this;
 		},
 		
 		stop_timer: function(func) {
-			;;; debug('psycholive.stop_timer('+func+')');
+			 debug('psycholive.stop_timer('+func+')');
 			$.timer.remove(this, func, this[func]);	
 			return this;
 		},
@@ -633,7 +633,7 @@
 			if (!this.opt.enable_scoreboard) {
 				return this;
 			}
-			;;; debug('psycholive.init_scoreboard()');
+			 debug('psycholive.init_scoreboard()');
 			
 			if (this.scoreboard) {
 				// reset the existing scoreboard and remove children
@@ -704,7 +704,7 @@
 				return this;
 			}
 
-			;;; debug5('psycholive.update_scoreboard()');
+			 debug5('psycholive.update_scoreboard()');
 
 			if ($.isFunction(this.opt.scoreboard_callback)) {
 				if (!this.opt.scoreboard_callback.apply(sb, [ this, 'update', sb, force_update ])) {
@@ -823,7 +823,7 @@
 			if (!this.opt.enable_combatlog) {
 				return this;
 			}
-			;;; debug('psycholive.init_combatlog()');
+			 debug('psycholive.init_combatlog()');
 			
 			if (this.combatmsg) {
 				this.combatmsg.hide().empty();
@@ -916,7 +916,7 @@
 	// PsychoLive Player constructor.
 	function Player(plr, pslive) {		// new Player()
 		return this.init(plr, pslive);
-	};
+	}
 	$.fn.psycholive.Player = Player;
 	Player.prototype = $.fn.psycholive.Player.prototype = {
 		init: function(plr, pslive) {
@@ -1081,7 +1081,7 @@
 				// don't move until we've properly spawned...
 				// this avoids some potential jitter at the
 				// start of rounds.
-				;;; debug(this.name() + ' was not spawned before moving!');
+				 debug(this.name() + ' was not spawned before moving!');
 				this.spawn(xyz);
 				//return this;
 			}
@@ -1174,7 +1174,7 @@
 				if (hs) msg += ' (hs)';
 				this.pslive.combatlog(msg);
 				p2.died();
-			};
+			}
 			return this;
 		},
 
@@ -1396,7 +1396,7 @@
 	// @param Object ele  optional dom element to attach entity to.
 	function Entity(name, opt, ele) { // new Entity()
 		return this.init(name, opt, ele);
-	};
+	}
 	Entity.count = 0;	// static var
 	$.fn.psycholive.Entity = Entity;
 	Entity.prototype = $.fn.psycholive.Entity.prototype = {
@@ -1564,7 +1564,7 @@
 	// @param object opt  option hash
 	function Canvas(dom, opt) { // new Canvas()
 		return this.init(dom, opt);
-	};
+	}
 	$.fn.psycholive.Canvas = Canvas;
 	Canvas.prototype = $.fn.psycholive.Canvas.prototype = {
 		opt: 		{},		// local options
@@ -1576,7 +1576,7 @@
 		paused: 	false,		// true if paused... duh
 		
 		init: function(dom, opt) {
-			;;; debug4('canvas.init()');
+			 debug4('canvas.init()');
 			this.opt = opt;
 			this.dom = dom;
 			this.dimensions(opt.width, opt.height);
@@ -1585,12 +1585,12 @@
 		},
 
 		init_game: function(game) {
-			;;; debug4('canvas.init_game()');
+			 debug4('canvas.init_game()');
 			this.game = game;
 		},
 
 		reset: function() {
-			;;; debug4('canvas.reset()');
+			 debug4('canvas.reset()');
 			this.items = {};
 			this.init_dom();
 			return this;
@@ -1626,7 +1626,7 @@
 
 		// initialize the DOM canvas background
 		init_dom: function(dom) {
-			;;; debug4('canvas.init_dom()');
+			 debug4('canvas.init_dom()');
 			// assign our DOM element if given...
 			if (dom) this.dom = dom;
 			// clear everything from the DOM, normalize CSS and set
@@ -1650,7 +1650,7 @@
 		init_background: function(callback) {
 			var $this = this;
 			var src = this.game.overlay.image_url;
-			;;; debug4('canvas.init_background(' + src + ')');
+			 debug4('canvas.init_background(' + src + ')');
 			var background = new Image();
 			background.onload = onload;
 			background.onabort = onerror;
@@ -1659,7 +1659,7 @@
 			
 			// local handlers for loading the image 
 			function onload(){
-				;;; debug('Overlay loaded: ' + this.src);
+				 debug('Overlay loaded: ' + this.src);
 				// remove any overlay already in place.
 				$('.pslive-overlay', $this.dom)
 					.fadeOut('normal', function(){ $(this).remove(); });
@@ -1670,7 +1670,7 @@
 					.data('width', this.width)	// save original size
 					.data('height', this.height)	// ...
 					.prependTo($this.dom);
-				;;; debug4('Overlay dimensions: ' + $this.background.width() + 'x' + $this.background.height());
+				 debug4('Overlay dimensions: ' + $this.background.width() + 'x' + $this.background.height());
 				$this.resize_background();
 				$this.background.fadeIn('normal');
 				$this.background.loaded = true;
@@ -1679,7 +1679,7 @@
 				}
 			}
 			function onerror(){
-				;;; debug('Error loading overlay: ' + this.src);
+				 debug('Error loading overlay: ' + this.src);
 			}
 			return this;
 		},
@@ -1710,7 +1710,7 @@
 		calc_cell_size: function() {
 			this.cellWidth  = Math.abs(this.game.overlay.minx - this.game.overlay.maxx) / this.background.width();
 			this.cellHeight = Math.abs(this.game.overlay.miny - this.game.overlay.maxy) / this.background.height();
-			;;; debug('CELL SIZE = ' + Math.round(this.cellWidth) + 'x' + Math.round(this.cellHeight));
+			 debug('CELL SIZE = ' + Math.round(this.cellWidth) + 'x' + Math.round(this.cellHeight));
 			return this;
 		},
 		
@@ -1981,7 +1981,7 @@
 				this.msg_round_end.fadeOut('fast', function(){$this.canvas.clear_messages($this.msg_round_end); delete $this.msg_round_end;});
 				delete this.msg_round_end;
 			}
-			;;; debug('THE ROUND HAS STARTED!');
+			 debug('THE ROUND HAS STARTED!');
 		},
 		ROUND_END: function(events) {
 			// remove all items from each player
@@ -1992,7 +1992,7 @@
 			// show scoreboard, if space isn't being held
 			if (!this.keysdown[32]) this.toggle_scoreboard(true);
 			this.msg_round_end = this.canvas.message('End of Round', 'BL', true);
-			;;; debug('THE ROUND HAS ENDED!!!');
+			 debug('THE ROUND HAS ENDED!!!');
 		},
 		KEY_PRESS: function(e) {
 			var key = e.keyCode ? e.keyCode : e.which;
@@ -2191,7 +2191,7 @@
 		if (minutes.length == 1) minutes = '0' + minutes;
 		if (seconds.length == 1) seconds = '0' + seconds;
 		return minutes + ':' + seconds;
-	};
+	}
 
 	// Positions an element within another dom element (usually the canvas)
 	// based on the size of the element and 2 character string which
@@ -2252,7 +2252,7 @@
 			//return ele;
 		}
 		return [ left, top ];
-	};
+	}
 	
 	// returns a string with %tokens% replaced with actual values from
 	// the tokens object.
@@ -2269,7 +2269,7 @@
 			left = str.indexOf('%', left + v.length);
 		}
 		return str;
-	};
+	}
 
 	// returns an array of the teams for the current game
 	function team_names(gametype, modtype) {
@@ -2282,7 +2282,7 @@
 			}
 		}
 		return [ 'TEAM1', 'TEAM2'] ;
-	};
+	}
 	
 	// simple debug messages
 	function debug(msg, level) {
@@ -2294,11 +2294,11 @@
 		//} else {
 		//	$('#debug ul').prepend('<li>' + msg + '</li>');
 		//}
-	};
-	function debug2(msg) { debug(msg, 2) };
-	function debug3(msg) { debug(msg, 3) };
-	function debug4(msg) { debug(msg, 4) };
-	function debug5(msg) { debug(msg, 5) };
+	}
+	function debug2(msg) { debug(msg, 2) }
+	function debug3(msg) { debug(msg, 3) }
+	function debug4(msg) { debug(msg, 4) }
+	function debug5(msg) { debug(msg, 5) }
 	// allow global access
 	$.fn.psycholive.debug = debug;
 	$.fn.psycholive.debug2 = debug2;
